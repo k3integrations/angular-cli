@@ -11,6 +11,7 @@ export interface BuildOptions {
   supressSizes: boolean;
   baseHref?: string;
   aot?: boolean;
+  progress?: boolean;
 }
 
 const BuildCommand = Command.extend({
@@ -31,7 +32,8 @@ const BuildCommand = Command.extend({
     { name: 'watcher',        type: String },
     { name: 'suppress-sizes', type: Boolean, default: false },
     { name: 'base-href',      type: String,  default: null, aliases: ['bh'] },
-    { name: 'aot',            type: Boolean, default: false }
+    { name: 'aot',            type: Boolean, default: false },
+    { name: 'progress',       type: Boolean, default: true, aliases: ['p'] },
   ],
 
   run: function (commandOptions: BuildOptions) {
@@ -52,7 +54,8 @@ const BuildCommand = Command.extend({
         ui: ui,
         outputPath: commandOptions.outputPath,
         target: commandOptions.target,
-        environment: commandOptions.environment
+        environment: commandOptions.environment,
+        progress: commandOptions.progress
       }) :
       new WebpackBuild({
         cliProject: project,
@@ -60,6 +63,7 @@ const BuildCommand = Command.extend({
         outputPath: commandOptions.outputPath,
         target: commandOptions.target,
         environment: commandOptions.environment,
+        progress: commandOptions.progress
       });
 
     return buildTask.run(commandOptions);

@@ -28,9 +28,11 @@ export default Task.extend({
     ).config;
     const webpackCompiler: any = webpack(config);
 
-    webpackCompiler.apply(new ProgressPlugin({
-      profile: true
-    }));
+    if (runTaskOptions.progress) {
+      webpackCompiler.apply(new ProgressPlugin({
+        profile: true
+      }));
+    }
 
     return new Promise((resolve, reject) => {
       webpackCompiler.watch({}, (err: any, stats: any) => {
